@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import jsPDF from 'jspdf'; // biblioteca para generar PDF
+import { Telegraf } from 'telegraf';
 
 function Transcripcion() {
   const [patients, setPatients] = useState([]);
@@ -512,7 +513,10 @@ function Transcripcion() {
   
       // Guardar el PDF con el nombre 'examenes.pdf'
       doc.save('examenes.pdf');
-      new Telegraf('5811027492:AAEacM9yDDTr56eGMp9WAb4loWCYTzMBjfs');
+      const bot = new Telegraf('5811027492:AAEacM9yDDTr56eGMp9WAb4loWCYTzMBjfs');
+      const chatId = 1147360782; // Reemplaza esto con el chatId real
+      const message = 'Hola desde el front!';
+      bot.telegram.sendMessage(chatId, message);
   
       // Cerrar la ventana emergente después de enviar el PDF
       setShowModal(false);
