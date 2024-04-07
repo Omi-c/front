@@ -8,9 +8,22 @@ function RegistroInventario() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    // Validar que los campos no estén vacíos
+    if (!producto || !cantidad) {
+      alert('Debe seleccionar un producto y especificar una cantidad.');
+      return;
+    }
+
+    // Validar que la cantidad no sea menor que 1
+    if (parseInt(cantidad) < 1) {
+      alert('La cantidad debe ser mayor o igual que 1.');
+      return;
+    }
+
     const data = {
-      nombre: producto,
-      existencias: cantidad
+      name: producto,
+      quantity: cantidad
     };
 
     axios.post('http://localhost:3001/inventary', data)

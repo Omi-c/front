@@ -26,17 +26,36 @@ function RegistroPacientes() {
   };
 
   const handleTelefonoChange = (e) => {
-    const input = e.target.value.replace(/\D/g, ''); // Sólo números
+    let input = e.target.value.replace(/\D/g, ''); // Sólo números
+    // Limitar el número de caracteres a 11
+    input = input.substring(0, 11);
     setTelefono(input);
   };
 
   const handleCedulaChange = (e) => {
-    const input = e.target.value.replace(/\D/g, ''); // Sólo números
+    let input = e.target.value.replace(/\D/g, ''); // Sólo números
+    // Limitar el número de caracteres a 7
+    input = input.substring(0, 7);
     setCedula(input);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+  
+    // Verificar si la fecha de nacimiento es mayor que la fecha actual
+    const fechaNacimientoValida = new Date(fechaNacimiento) <= new Date();
+    if (!fechaNacimientoValida) {
+      alert("La fecha de nacimiento no puede ser mayor a la fecha actual");
+      return;
+    }
+  
+    // Verificar si el número de teléfono cumple con las condiciones requeridas
+    const telefonoValido = /^(0412|0414|0416|0424)\d{7}$/g.test(telefono);
+    if (!telefonoValido) {
+      alert("El número telefónico debe comenzar con 0412, 0414, 0416 o 0424");
+      return;
+    }
+  
     const data = {
       first_name: nombre,
       last_name: apellido,
@@ -56,6 +75,7 @@ function RegistroPacientes() {
       console.error('Error al enviar los datos:', error);
     }
   };
+  
 
   return (
     //cada input tiene su correspondiente value que está enlazado con el estado y
@@ -114,9 +134,10 @@ function RegistroPacientes() {
             <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="telefono"
-              type="text"
+              type="tel"
               value={telefono}
               onChange={handleTelefonoChange}
+              minLength={11}
               maxLength={11}
               placeholder="Teléfono"
               required
@@ -132,7 +153,8 @@ function RegistroPacientes() {
               type="text"
               value={cedula}
               onChange={handleCedulaChange}
-              maxLength={8}
+              minLength={7}
+              maxLength={7}
               placeholder="Cédula de identidad"
               required
             />

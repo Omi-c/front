@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
 import Inicio from './inicio.js';
 import PacientesRegistrados from './pacientes-registrados.js';
 import ResultadosPacientes from './resultados-pacientes.js';
+import AgendaCitas from "./agenda-citas.js";
 import ListaPrecios from './lista-precios.js';
 import { HomeIcon, MailIcon, UserAddIcon, UsersIcon, CurrencyDollarIcon, MenuIcon, ArchiveIcon, ClipboardCopyIcon, PencilAltIcon, LogoutIcon } from '@heroicons/react/outline';
 
@@ -18,7 +19,6 @@ function VistaMedico() {
     window.location.reload();
   };
   
-
 
   return (
     <Router>
@@ -61,6 +61,13 @@ function VistaMedico() {
                 </li>
 
                 <li>
+                  <div className="flex items-center hover:bg-teal-500">
+                    <HomeIcon className="h-5 w-5 mr-2 text-white" />
+                    <Link to="/agenda-citas" className="py-2 px-4 text-white">Agendar Cita</Link>
+                  </div>
+                </li>
+
+                <li>
                   <div className="flex items-center hover:bg-teal-500" onClick={handleLogout}>
                     <LogoutIcon className="h-5 w-5 mr-2 text-white" />
                     <span className="py-2 px-4 text-white cursor-pointer">Cerrar Sesión</span>
@@ -84,6 +91,7 @@ function VistaMedico() {
               <Route path="/pacientes-registrados" element={<PacientesRegistrados />} />
               <Route path="/lista-precios" element={<ListaPrecios />} />
               <Route path="/resultados-pacientes" element={<ResultadosPacientes />} />
+              <Route path="/agenda-citas" element={<AgendaCitas />} />
             </Routes>
           </div>
         </div>

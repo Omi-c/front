@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import jsPDF from 'jspdf'; // biblioteca para generar PDF
-import { Telegraf } from 'telegraf';
 
 function Transcripcion() {
   const [patients, setPatients] = useState([]);
   const [selectedPatient, setSelectedPatient] = useState('');
   const [selectedTests, setSelectedTests] = useState([]);
   const [template, setTemplate] = useState('');
-  const [images, setImages] = useState([]);
   const [showModal, setShowModal] = useState(false); // Estado para controlar la visibilidad de la ventana emergente
   
   // Obtener la lista de pacientes registrados
@@ -48,33 +46,33 @@ function Transcripcion() {
         case 'Hepatitis B':
         case 'Exudado Faringeo':
           template += `
-            <div class="mb-6 text-center"> <!-- Añadir margen inferior entre exámenes -->
-            <h1 class="text-2xl font-bold mb-4">${test}</h1>
+            <div class="mb-6"> 
+            <h1 class="text-2xl font-bold mb-4 text-center">${test}</h1>
               <p>Paciente: ${selectedPatient}</p>
-              <p>Fecha: ${new Date().toLocaleDateString()}</p> <!-- Mostrar la fecha actual -->
-              <!-- Agregar datos del paciente -->
+              <p>Fecha: ${new Date().toLocaleDateString()}</p> 
               <p>Nombre: ${patients.find(patient => patient.id === parseInt(selectedPatient)).first_name}</p>
               <p>Apellido: ${patients.find(patient => patient.id === parseInt(selectedPatient)).last_name}</p>
               <p>Cédula: ${patients.find(patient => patient.id === parseInt(selectedPatient)).ci_number}</p>
               <p>Fecha de Nacimiento: ${patients.find(patient => patient.id === parseInt(selectedPatient)).born_date}</p>
+              <div class="mt-6"> 
               <p>Estado: <select><option value="positivo">Positivo</option><option value="negativo">Negativo</option></select></p>
             </div>
-            <hr class="my-4"> <!-- Añadir línea de separación entre exámenes -->
+            <hr class="my-4"> 
           `;
           break;
         case 'Enzimas Cardiacas':
           template += `
-            <div class="mb-6 text-center"> <!-- Añadir margen inferior entre exámenes -->
-              <h1 class="text-2xl font-bold mb-4">${test}</h1> 
+            <div class="mb-6"> 
+              <h1 class="text-2xl font-bold mb-4 text-center">${test}</h1> 
               <p>Paciente: ${selectedPatient}</p>
-              <p>Fecha: ${new Date().toLocaleDateString()}</p> <!-- Mostrar la fecha actual -->
-              <!-- Agregar datos del paciente -->
+              <p>Fecha: ${new Date().toLocaleDateString()}</p>
+              
               <p>Nombre: ${patients.find(patient => patient.id === parseInt(selectedPatient)).first_name}</p>
               <p>Apellido: ${patients.find(patient => patient.id === parseInt(selectedPatient)).last_name}</p>
               <p>Cédula: ${patients.find(patient => patient.id === parseInt(selectedPatient)).ci_number}</p>
               <p>Fecha de Nacimiento: ${patients.find(patient => patient.id === parseInt(selectedPatient)).born_date}</p>
               ${test === 'Enzimas Cardiacas' ? `
-              <div class="grid grid-cols-2 gap-4">
+              <div class="grid grid-cols-2 gap-4 mt-6">
                 <div>
                   <label for="CPK" class="block text-sm font-semibold mb-2">CPK (UI/L)</label>
                   <input type="text" id="CK" name="CK" placeholder="" pattern="[0-9]*" className="border rounded py-1 px-2 mb-2 "> 
@@ -90,22 +88,22 @@ function Transcripcion() {
               </div>
               ` : ''}
             </div>
-            <hr class="my-4"> <!-- Añadir línea de separación entre exámenes -->
+            <hr class="my-4"> 
           `;
         break;
         case 'Grupo Sanguíneo':
           template += `
-            <div class="mb-6 text-center"> <!-- Añadir margen inferior entre exámenes y centrar elementos -->
-              <h1 class="text-2xl font-bold mb-4">${test}</h1> <!-- Cambiar a h1, negrita y más grande -->
+            <div class="mb-6"> 
+              <h1 class="text-2xl font-bold mb-4 text-center">${test}</h1> 
               <p>Paciente: ${selectedPatient}</p>
-              <p>Fecha: ${new Date().toLocaleDateString()}</p> <!-- Mostrar la fecha actual -->
-              <!-- Agregar datos del paciente -->
+              <p>Fecha: ${new Date().toLocaleDateString()}</p> 
+              
               <p>Nombre: ${patients.find(patient => patient.id === parseInt(selectedPatient)).first_name}</p>
               <p>Apellido: ${patients.find(patient => patient.id === parseInt(selectedPatient)).last_name}</p>
               <p>Cédula: ${patients.find(patient => patient.id === parseInt(selectedPatient)).ci_number}</p>
               <p>Fecha de Nacimiento: ${patients.find(patient => patient.id === parseInt(selectedPatient)).born_date}</p>
               ${test === 'Grupo Sanguíneo' ? `
-              <div class="grid grid-cols-2 gap-4"> 
+              <div class="grid grid-cols-2 gap-4 mt-6"> 
                 <label for="grupoSanguineo" class="block text-sm font-semibold mb-2">Grupo sanguíneo:</label>
                 <select id="grupoSanguineo" name="grupoSanguineo" className="border rounded py-1 px-2 mb-2 "> 
                   <option value="A">A</option>
@@ -116,33 +114,33 @@ function Transcripcion() {
               </div>
               ` : ''}
             </div>
-            <hr class="my-4"> <!-- Añadir línea de separación entre exámenes -->
+            <hr class="my-4"> 
           `;
           break;
         case 'Hematología':
             template += `
-              <div class="mb-6 text-center"> <!-- Añadir margen inferior entre exámenes y centrar elementos -->
-                <h1 class="text-2xl font-bold mb-4">${test}</h1> <!-- Cambiar a h1, negrita y más grande -->
+              <div class="mb-6"> 
+                <h1 class="text-2xl font-bold mb-4 text-center">${test}</h1> 
                 <p>Paciente: ${selectedPatient}</p>
-                <p>Fecha: ${new Date().toLocaleDateString()}</p> <!-- Mostrar la fecha actual -->
-                <!-- Agregar datos del paciente -->
+                <p>Fecha: ${new Date().toLocaleDateString()}</p> 
+                
                 <p>Nombre: ${patients.find(patient => patient.id === parseInt(selectedPatient)).first_name}</p>
                 <p>Apellido: ${patients.find(patient => patient.id === parseInt(selectedPatient)).last_name}</p>
                 <p>Cédula: ${patients.find(patient => patient.id === parseInt(selectedPatient)).ci_number}</p>
                 <p>Fecha de Nacimiento: ${patients.find(patient => patient.id === parseInt(selectedPatient)).born_date}</p>
                 ${test === 'Hematología' ? `
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-2 gap-4 mt-6">
                   <div>
                     <label for="Hemoglobina" class="block text-sm font-semibold mb-2">Hemoglobina</label>
-                    <input type="text" id="Hemoglobina" name="Hemoglobina" placeholder="" pattern="[0-9]*" className="border rounded py-1 px-2 mb-2 bg-gray-200"> <!-- Cambiar color de fondo a gris claro -->
+                    <input type="text" id="Hemoglobina" name="Hemoglobina" placeholder="" pattern="[0-9]*" className="border rounded py-1 px-2 mb-2 bg-gray-200"> 
                   </div>
                   <div>
                     <label for="Hematocritos" class="block text-sm font-semibold mb-2">Hematocritos</label>
-                    <input type="text" id="Hematocritos" name="Hematocritos" placeholder="" pattern="[0-9]*" className="border rounded py-1 px-2 mb-2 bg-gray-200"> <!-- Cambiar color de fondo a gris claro -->
+                    <input type="text" id="Hematocritos" name="Hematocritos" placeholder="" pattern="[0-9]*" className="border rounded py-1 px-2 mb-2 bg-gray-200"> 
                   </div>
                   <div>
                     <label for="CHCM" class="block text-sm font-semibold mb-2">CHCM</label>
-                    <input type="text" id="CHCM" name="CHCM" placeholder="" pattern="[0-9]*" className="border rounded py-1 px-2 mb-2"> <!-- Cambiar color de fondo a gris claro -->
+                    <input type="text" id="CHCM" name="CHCM" placeholder="" pattern="[0-9]*" className="border rounded py-1 px-2 mb-2"> 
                   </div>
                   <div>
                     <label for="GlobulosBlancos" class="block text-sm font-semibold mb-2">Glóbulos blancos</label>
@@ -150,41 +148,41 @@ function Transcripcion() {
                   </div>
                   <div>
                     <label for="Plaquetas" class="block text-sm font-semibold mb-2">Plaquetas</label>
-                    <input type="text" id="Plaquetas" name="Plaquetas" placeholder="" pattern="[0-9]*" className="border rounded py-1 px-2 mb-2 "> <!-- Cambiar color de fondo a gris claro -->
+                    <input type="text" id="Plaquetas" name="Plaquetas" placeholder="" pattern="[0-9]*" className="border rounded py-1 px-2 mb-2 "> 
                   </div>
                   <div>
                     <label for="Neotrofilos" class="block text-sm font-semibold mb-2">Neotrofilos</label>
-                    <input type="text" id="Neotrofilos" name="Neotrofilos" placeholder="%" pattern="[0-9]*" className="border rounded py-1 px-2 mb-2"> <!-- Cambiar color de fondo a gris claro -->
+                    <input type="text" id="Neotrofilos" name="Neotrofilos" placeholder="%" pattern="[0-9]*" className="border rounded py-1 px-2 mb-2"> 
                   </div>
                   <div>
                     <label for="Linfocitos" class="block text-sm font-semibold mb-2">Linfocitos</label>
-                    <input type="text" id="Linfocitos" name="Linfocitos" placeholder="%" pattern="[0-9]*" className="border rounded py-1 px-2 mb-2"> <!-- Cambiar color de fondo a gris claro -->
+                    <input type="text" id="Linfocitos" name="Linfocitos" placeholder="%" pattern="[0-9]*" className="border rounded py-1 px-2 mb-2"> 
                   </div>
                   <div>
                     <label for="Monocitos" class="block text-sm font-semibold mb-2">Monocitos</label>
-                    <input type="text" id="Monocitos" name="Monocitos" placeholder="%" pattern="[0-9]*" className="border rounded py-1 px-2 mb-2"> <!-- Cambiar color de fondo a gris claro -->
+                    <input type="text" id="Monocitos" name="Monocitos" placeholder="%" pattern="[0-9]*" className="border rounded py-1 px-2 mb-2"> 
                   </div>
                   <div>
                     <label for="Eosinofilos" class="block text-sm font-semibold mb-2">Eosinofilos</label>
-                    <input type="text" id="Eosinofilos" name="Eosinofilos" placeholder="%" pattern="[0-9]*" className="border rounded py-1 px-2 mb-2"> <!-- Cambiar color de fondo a gris claro -->
+                    <input type="text" id="Eosinofilos" name="Eosinofilos" placeholder="%" pattern="[0-9]*" className="border rounded py-1 px-2 mb-2"> 
                   </div>
                   <div>
                     <label for="Basofilos" class="block text-sm font-semibold mb-2">Basofilos</label>
-                    <input type="text" id="Basofilos" name="Basofilos" placeholder="%" pattern="[0-9]*" className="border rounded py-1 px-2 mb-2 "> <!-- Cambiar color de fondo a gris claro -->
+                    <input type="text" id="Basofilos" name="Basofilos" placeholder="%" pattern="[0-9]*" className="border rounded py-1 px-2 mb-2 "> 
                   </div>
                 </div>
                 ` : ''}
               </div>
-              <hr class="my-4"> <!-- Añadir línea de separación entre exámenes -->
+              <hr class="my-4"> 
             `;
             break;
         case 'Prueba de Orina':
               template += `
-                <div class="mb-6 text-center"> <!-- Añadir margen inferior entre exámenes y centrar elementos -->
-                  <h1 class="text-2xl font-bold mb-4">${test}</h1> <!-- Cambiar a h1, negrita y más grande -->
+                <div class="mb-6"> 
+                  <h1 class="text-2xl font-bold mb-4 text-center">${test}</h1> 
                   <p>Paciente: ${selectedPatient}</p>
-                  <p>Fecha: ${new Date().toLocaleDateString()}</p> <!-- Mostrar la fecha actual -->
-                  <!-- Agregar datos del paciente -->
+                  <p>Fecha: ${new Date().toLocaleDateString()}</p> 
+                  
                   <p>Nombre: ${patients.find(patient => patient.id === parseInt(selectedPatient)).first_name}</p>
                   <p>Apellido: ${patients.find(patient => patient.id === parseInt(selectedPatient)).last_name}</p>
                   <p>Cédula: ${patients.find(patient => patient.id === parseInt(selectedPatient)).ci_number}</p>
@@ -193,82 +191,81 @@ function Transcripcion() {
                   <div class="grid grid-cols-2 gap-4">
                     <div>
                       <label for="Color" class="block text-sm font-semibold mb-2">Color</label>
-                      <input type="text" id="Color" name="Color" placeholder="" className="border rounded py-1 px-2 mb-2 bg-gray-200"> <!-- Cambiar color de fondo a gris claro -->
+                      <input type="text" id="Color" name="Color" placeholder="" className="border rounded py-1 px-2 mb-2 bg-gray-200"> 
                     </div>
                     <div>
                       <label for="Proteinas" class="block text-sm font-semibold mb-2">Proteinas</label>
-                      <input type="text" id="Proteinas" name="Proteinas" placeholder="" className="border rounded py-1 px-2 mb-2 bg-gray-200"> <!-- Cambiar color de fondo a gris claro -->
+                      <input type="text" id="Proteinas" name="Proteinas" placeholder="" className="border rounded py-1 px-2 mb-2 bg-gray-200"> 
                     </div>
                     <div>
                       <label for="Glucosa" class="block text-sm font-semibold mb-2">Glucosa</label>
-                      <input type="text" id="Glucosa" name="Glucosa" placeholder="" className="border rounded py-1 px-2 mb-2 bg-gray-200"> <!-- Cambiar color de fondo a gris claro -->
+                      <input type="text" id="Glucosa" name="Glucosa" placeholder="" className="border rounded py-1 px-2 mb-2 bg-gray-200"> 
                     </div>
                     <div>
                       <label for="Hemoglobina" class="block text-sm font-semibold mb-2">Hemoglobina</label>
-                      <input type="text" id="Hemoglobina" name="Hemoglobina" placeholder="" className="border rounded py-1 px-2 mb-2 bg-gray-200"> <!-- Cambiar color de fondo a gris claro -->
+                      <input type="text" id="Hemoglobina" name="Hemoglobina" placeholder="" className="border rounded py-1 px-2 mb-2 bg-gray-200"> 
                     </div>
                     <div>
                       <label for="PH" class="block text-sm font-semibold mb-2">PH</label>
-                      <input type="text" id="PH" name="PH" placeholder="" className="border rounded py-1 px-2 mb-2 bg-gray-200"> <!-- Cambiar color de fondo a gris claro -->
+                      <input type="text" id="PH" name="PH" placeholder="" className="border rounded py-1 px-2 mb-2 bg-gray-200"> 
                     </div>
                     <div>
                       <label for="Hematies" class="block text-sm font-semibold mb-2">Hematies</label>
-                      <input type="text" id="Hematies" name="Hematies" placeholder="XC" className="border rounded py-1 px-2 mb-2 bg-gray-200"> <!-- Cambiar color de fondo a gris claro -->
+                      <input type="text" id="Hematies" name="Hematies" placeholder="XC" className="border rounded py-1 px-2 mb-2 bg-gray-200"> 
                     </div>
                     <div>
                       <label for="Densidad" class="block text-sm font-semibold mb-2">Densidad</label>
-                      <input type="text" id="Densidad" name="Densidad" placeholder="" className="border rounded py-1 px-2 mb-2 bg-gray-200"> <!-- Cambiar color de fondo a gris claro -->
+                      <input type="text" id="Densidad" name="Densidad" placeholder="" className="border rounded py-1 px-2 mb-2 bg-gray-200"> 
                     </div>
                     <div>
                       <label for="Cantidad" class="block text-sm font-semibold mb-2">Cantidad</label>
-                      <input type="text" id="Cantidad" name="Cantidad" placeholder="CC" className="border rounded py-1 px-2 mb-2 bg-gray-200"> <!-- Cambiar color de fondo a gris claro -->
+                      <input type="text" id="Cantidad" name="Cantidad" placeholder="CC" className="border rounded py-1 px-2 mb-2 bg-gray-200"> 
                     </div>
                     <div>
                       <label for="Nitritos" class="block text-sm font-semibold mb-2">Nitritos</label>
-                      <select id="Nitritos" name="Nitritos" className="border rounded py-1 px-2 mb-2 bg-gray-200"> <!-- Cambiar color de fondo a gris claro -->
+                      <select id="Nitritos" name="Nitritos" className="border rounded py-1 px-2 mb-2 bg-gray-200"> 
                         <option value="Positivo">Positivo</option>
                         <option value="Negativo">Negativo</option>
                       </select>
                     </div>
                     <div>
                       <label for="Bilirrubina" class="block text-sm font-semibold mb-2">Bilirrubina</label>
-                      <select id="Bilirrubina" name="Bilirrubina" className="border rounded py-1 px-2 mb-2 bg-gray-200"> <!-- Cambiar color de fondo a gris claro -->
+                      <select id="Bilirrubina" name="Bilirrubina" className="border rounded py-1 px-2 mb-2 bg-gray-200"> 
                         <option value="Positivo">Positivo</option>
                         <option value="Negativo">Negativo</option>
                       </select>
                     </div>
                     <div>
                       <label for="Urobilina" class="block text-sm font-semibold mb-2">Urobilina</label>
-                      <select id="Urobilina" name="Urobilina" className="border rounded py-1 px-2 mb-2 bg-gray-200"> <!-- Cambiar color de fondo a gris claro -->
+                      <select id="Urobilina" name="Urobilina" className="border rounded py-1 px-2 mb-2 bg-gray-200"> 
                         <option value="Positivo">Positivo</option>
                         <option value="Negativo">Negativo</option>
                       </select>
                     </div>
                     <div>
                       <label for="PigBili" class="block text-sm font-semibold mb-2">Pig. Bili</label>
-                      <select id="PigBili" name="PigBili" className="border rounded py-1 px-2 mb-2 bg-gray-200"> <!-- Cambiar color de fondo a gris claro -->
+                      <select id="PigBili" name="PigBili" className="border rounded py-1 px-2 mb-2 bg-gray-200"> 
                         <option value="Positivo">Positivo</option>
                         <option value="Negativo">Negativo</option>
                       </select>
                     </div>
                     <div>
                       <label for="Cetona" class="block text-sm font-semibold mb-2">Cetona</label>
-                      <select id="Cetona" name="Cetona" className="border rounded py-1 px-2 mb-2 bg-gray-200"> <!-- Cambiar color de fondo a gris claro -->
+                      <select id="Cetona" name="Cetona" className="border rounded py-1 px-2 mb-2 bg-gray-200"> 
                         <option value="Positivo">Positivo</option>
                         <option value="Negativo">Negativo</option>
                       </select>
                     </div>
                     <div>
                       <label for="Cristales" class="block text-sm font-semibold mb-2">Cristales</label>
-                      <select id="Cristales" name="Cristales" className="border rounded py-1 px-2 mb-2 bg-gray-200"> <!-- Cambiar color de fondo a gris claro -->
-                        <option value="Moderados">Moderados</option>
+                      <select id="Cristales" name="Cristales" className="border rounded py-1 px-2 mb-2 bg-gray-200"> 
                         <option value="Abundantes">Abundantes</option>
                         <option value="Escasos">Escasos</option>
                       </select>
                     </div>
                     <div>
                       <label for="Bacterias" class="block text-sm font-semibold mb-2">Bacterias</label>
-                      <select id="Bacterias" name="Bacterias" className="border rounded py-1 px-2 mb-2 bg-gray-200"> <!-- Cambiar color de fondo a gris claro -->
+                      <select id="Bacterias" name="Bacterias" className="border rounded py-1 px-2 mb-2 bg-gray-200"> 
                         <option value="Moderados">Moderados</option>
                         <option value="Abundantes">Abundantes</option>
                         <option value="Escasos">Escasos</option>
@@ -276,7 +273,7 @@ function Transcripcion() {
                     </div>
                     <div>
                       <label for="Mucina" class="block text-sm font-semibold mb-2">Mucina</label>
-                      <select id="Mucina" name="Mucina" className="border rounded py-1 px-2 mb-2 bg-gray-200"> <!-- Cambiar color de fondo a gris claro -->
+                      <select id="Mucina" name="Mucina" className="border rounded py-1 px-2 mb-2 bg-gray-200"> 
                         <option value="Moderados">Moderados</option>
                         <option value="Abundantes">Abundantes</option>
                         <option value="Escasos">Escasos</option>
@@ -285,16 +282,16 @@ function Transcripcion() {
                   </div>
                   ` : ''}
                 </div>
-                <hr class="my-4"> <!-- Añadir línea de separación entre exámenes -->
+                <hr class="my-4"> 
               `;
               break;
         case 'Prueba de Heces':
                 template += `
-                  <div class="mb-6 text-center"> <!-- Añadir margen inferior entre exámenes y centrar elementos -->
-                    <h1 class="text-2xl font-bold mb-4">${test}</h1> <!-- Cambiar a h1, negrita y más grande -->
+                  <div class="mb-6"> 
+                    <h1 class="text-2xl font-bold mb-4">${test}</h1> 
                     <p>Paciente: ${selectedPatient}</p>
-                    <p>Fecha: ${new Date().toLocaleDateString()}</p> <!-- Mostrar la fecha actual -->
-                    <!-- Agregar datos del paciente -->
+                    <p>Fecha: ${new Date().toLocaleDateString()}</p> 
+                    
                     <p>Nombre: ${patients.find(patient => patient.id === parseInt(selectedPatient)).first_name}</p>
                     <p>Apellido: ${patients.find(patient => patient.id === parseInt(selectedPatient)).last_name}</p>
                     <p>Cédula: ${patients.find(patient => patient.id === parseInt(selectedPatient)).ci_number}</p>
@@ -348,23 +345,23 @@ function Transcripcion() {
                     </div>
                     ` : ''}
                   </div>
-                  <hr class="my-4"> <!-- Añadir línea de separación entre exámenes -->
+                  <hr class="my-4">
                 `;
                 break;
         case 'VSG':
           template += `
-            <div class="mb-6 text-center"> <!-- Añadir margen inferior entre exámenes y centrar elementos -->
-              <h1 class="text-2xl font-bold mb-4">${test}</h1>
+            <div class="mb-6"> 
+              <h1 class="text-2xl font-bold mb-4 text-center">${test}</h1>
               <p>Paciente: ${selectedPatient}</p>
-              <p>Fecha: ${new Date().toLocaleDateString()}</p> <!-- Mostrar la fecha actual -->
-              <!-- Agregar datos del paciente -->
+              <p>Fecha: ${new Date().toLocaleDateString()}</p> 
+             
               <p>Nombre: ${patients.find(patient => patient.id === parseInt(selectedPatient)).first_name}</p>
               <p>Apellido: ${patients.find(patient => patient.id === parseInt(selectedPatient)).last_name}</p>
               <p>Cédula: ${patients.find(patient => patient.id === parseInt(selectedPatient)).ci_number}</p>
               <p>Fecha de Nacimiento: ${patients.find(patient => patient.id === parseInt(selectedPatient)).born_date}</p>
               ${test === 'VSG' ? `
-              <div class="flex justify-center"> <!-- Contenedor para centrar horizontalmente -->
-                <div class="w-full md:w-1/2"> <!-- Establecer el ancho máximo para evitar que el campo sea demasiado ancho -->
+              <div class="flex mt-6"> 
+                <div class="w-full md:w-1/2"> 
                   <label for="Eritrosedimentacion" class="block text-sm font-semibold mb-2">Eritrosedimentación</label>
                   <input type="text" id="Eritrosedimentacion" name="Eritrosedimentacion" placeholder="mm/1h" pattern="[0-9]*" className="border rounded py-1 px-2 mb-2">
                   <p class="text-sm">Valor de referencia: 0-10 mm/1 hora</p>
@@ -372,22 +369,22 @@ function Transcripcion() {
               </div>
               ` : ''}
             </div>
-            <hr class="my-4"> <!-- Añadir línea de separación entre exámenes -->
+            <hr class="my-4"> 
           `;
         break;
         case 'PCR':
           template += `
-            <div class="mb-6 text-center"> <!-- Añadir margen inferior entre exámenes y centrar elementos -->
-              <h1 class="text-2xl font-bold mb-4">${test}</h1>
+            <div class="mb-6"> 
+              <h1 class="text-2xl font-bold mb-4 text-center">${test}</h1>
               <p>Paciente: ${selectedPatient}</p>
-              <p>Fecha: ${new Date().toLocaleDateString()}</p> <!-- Mostrar la fecha actual -->
-              <!-- Agregar datos del paciente -->
+              <p>Fecha: ${new Date().toLocaleDateString()}</p> 
+             
               <p>Nombre: ${patients.find(patient => patient.id === parseInt(selectedPatient)).first_name}</p>
               <p>Apellido: ${patients.find(patient => patient.id === parseInt(selectedPatient)).last_name}</p>
               <p>Cédula: ${patients.find(patient => patient.id === parseInt(selectedPatient)).ci_number}</p>
               <p>Fecha de Nacimiento: ${patients.find(patient => patient.id === parseInt(selectedPatient)).born_date}</p>
               ${test === 'PCR' ? `
-              <div class="flex justify-center items-center flex-col">
+              <div class="flex flex-col mt-6">
                 <div class="w-full md:w-1/2">
                   <label for="PCR" class="block text-sm font-semibold mb-2">PCR</label>
                   <input type="text" id="PCR" name="PCR" placeholder="" pattern="[0-9]*" className="border rounded py-1 px-2 mb-2">
@@ -396,22 +393,22 @@ function Transcripcion() {
               </div>
               ` : ''}
             </div>
-            <hr class="my-4"> <!-- Añadir línea de separación entre exámenes -->
+            <hr class="my-4"> 
           `;
         break;
         case 'PT, PTT':
           template += `
-            <div class="mb-6 text-center"> <!-- Añadir margen inferior entre exámenes y centrar elementos -->
-              <h1 class="text-2xl font-bold mb-4">${test}</h1>
+            <div class="mb-6"> 
+              <h1 class="text-2xl font-bold mb-4 text-center">${test}</h1>
               <p>Paciente: ${selectedPatient}</p>
-              <p>Fecha: ${new Date().toLocaleDateString()}</p> <!-- Mostrar la fecha actual -->
-              <!-- Agregar datos del paciente -->
+              <p>Fecha: ${new Date().toLocaleDateString()}</p> 
+       
               <p>Nombre: ${patients.find(patient => patient.id === parseInt(selectedPatient)).first_name}</p>
               <p>Apellido: ${patients.find(patient => patient.id === parseInt(selectedPatient)).last_name}</p>
               <p>Cédula: ${patients.find(patient => patient.id === parseInt(selectedPatient)).ci_number}</p>
               <p>Fecha de Nacimiento: ${patients.find(patient => patient.id === parseInt(selectedPatient)).born_date}</p>
               ${test === 'PT, PTT' ? `
-              <div class="grid grid-cols-2 gap-4">
+              <div class="grid grid-cols-2 gap-4 mt-6">
                 <div>
                   <label for="PT" class="block text-sm font-semibold mb-2">PT</label>
                   <input type="text" id="PT" name="PT" placeholder="" pattern="[0-9]*" className="border rounded py-1 px-2 mb-2">
@@ -423,22 +420,22 @@ function Transcripcion() {
               </div>
               ` : ''}
             </div>
-            <hr class="my-4"> <!-- Añadir línea de separación entre exámenes -->
+            <hr class="my-4"> 
           `;
           break;
         case 'Química Sanguínea':
             template += `
-              <div class="mb-6 text-center"> <!-- Añadir margen inferior entre exámenes y centrar elementos -->
-                <h1 class="text-2xl font-bold mb-4">${test}</h1> <!-- Cambiar a h1, negrita y más grande -->
+              <div class="mb-6"> 
+                <h1 class="text-2xl font-bold mb-4 text-center">${test}</h1> 
                 <p>Paciente: ${selectedPatient}</p>
-                <p>Fecha: ${new Date().toLocaleDateString()}</p> <!-- Mostrar la fecha actual -->
-                <!-- Agregar datos del paciente -->
+                <p>Fecha: ${new Date().toLocaleDateString()}</p> 
+               
                 <p>Nombre: ${patients.find(patient => patient.id === parseInt(selectedPatient)).first_name}</p>
                 <p>Apellido: ${patients.find(patient => patient.id === parseInt(selectedPatient)).last_name}</p>
                 <p>Cédula: ${patients.find(patient => patient.id === parseInt(selectedPatient)).ci_number}</p>
                 <p>Fecha de Nacimiento: ${patients.find(patient => patient.id === parseInt(selectedPatient)).born_date}</p>
                 ${test === 'Química Sanguínea' ? `
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-2 gap-4 mt-6">
                   <div>
                     <label for="Glucosa" class="block text-sm font-semibold mb-2">Glucosa</label>
                     <input type="text" id="Glucosa" name="Glucosa" placeholder="mg/dL" pattern="[0-9]*" className="border rounded py-1 px-2 mb-2">
@@ -472,7 +469,7 @@ function Transcripcion() {
                 </div>
                 ` : ''}
               </div>
-              <hr class="my-4"> <!-- Añadir línea de separación entre exámenes -->
+              <hr class="my-4"> 
             `;
           break;
         default:
@@ -493,40 +490,94 @@ function Transcripcion() {
     setShowModal(true);
   };
   
-  const handleSend = async () => {
-    try {
-      const doc = new jsPDF();
-      let yOffset = 10;
+
+const handleSend = async () => {
+  try {
+    const doc = new jsPDF();
+    let yOffset = 10;
   
-      // Agregar contenido de la plantilla al PDF
-      doc.setFontSize(12);
-      doc.text(template, 10, yOffset);
-      yOffset += 10;
-  
-      // Agregar información de los exámenes al PDF
-      selectedTests.forEach((test, index) => {
-        const examData = `Examen ${index + 1}: ${test}`;
-        doc.text(examData, 10, yOffset);
-        yOffset += 10;
-        // Agregar información adicional aquí, por ejemplo, datos del paciente, fecha, etc.
-      });
-  
-      // Guardar el PDF con el nombre 'examenes.pdf'
-      doc.save('examenes.pdf');
-      const bot = new Telegraf('5811027492:AAEacM9yDDTr56eGMp9WAb4loWCYTzMBjfs');
-      const chatId = 1147360782; // Reemplaza esto con el chatId real
-      const message = 'Hola desde el front!';
-      bot.telegram.sendMessage(chatId, message);
-  
-      // Cerrar la ventana emergente después de enviar el PDF
-      setShowModal(false);
-  
-    } catch (error) {
-      console.error('Error generating PDF:', error);
+    // Agregar contenido de la plantilla al PDF
+    doc.setFontSize(12);
+    doc.text("Resultados de exámenes", 10, yOffset);
+    yOffset += 10;
+
+    // Validar campos de texto antes de enviar
+    const inputs = document.querySelectorAll('#exampleModal input[type="text"]');
+    let isValid = true;
+    inputs.forEach(input => {
+      if (!input.value || isNaN(input.value)) {
+        isValid = false;
+        return;
+      }
+    });
+
+    function validateInputs(...inputs) {
+      for (const input of inputs) {
+        if (!input.value || isNaN(input.value)) {
+          return false;
+        }
+      }
+      return true;
     }
-  };
-  
-  
+
+    // Mapeo de nombres de exámenes a los identificadores de campos de entrada correspondientes
+    const examInputs = {
+      "Enzimas Cardiacas": ['#CK', '#CKMH', '#Troponina'], "Hematología": ['#Hemoglobina', '#Hematocritos', '#CHCM', '#GlobulosBlancos', '#Plaquetas', '#Neotrofilos', '#Linfocitos', '#Monocitos', '#Eosinofilos', '#Basofilos'],"Prueba de Orina": ['#Color', '#Proteinas', '#Glucosa', '#Hemoglobina', '#PH', '#Hematies', '#Densidad', '#Cantidad'],
+      "Prueba de Heces": ['#ColorHeces', '#OlorHeces', '#AspectoHeces', '#ConsistenciaHeces', '#ReaccionHeces'], "VSG": ['#Eritrosedimentacion'], "PCR": ['#PCR'], "PT, PTT": ['#PT', '#PTT'], "Química Sanguínea": ['#Glucosa', '#Colesterol', '#Creatinina', '#Urea', '#Trigliceridos', '#Bilirrubina']
+    };
+
+    // Validación de los campos de exámenes de laboratorio
+    for (const exam in examInputs) {
+      if (selectedTests.includes(exam)) {
+        const examFields = examInputs[exam].map(field => document.querySelector(field));
+        isValid = validateInputs(...examFields);
+      }
+    }
+    if (!isValid) {
+      alert("Por favor, complete todos los campos de texto con valores numéricos.");
+      return;
+    }
+
+    // Agregar información de los exámenes al PDF
+    selectedTests.forEach((test, index) => {
+      const examData = `Examen ${index + 1}: ${test}`;
+      doc.text(examData, 10, yOffset);
+      yOffset += 10;
+    });
+
+    // Agregar información del paciente al PDF
+    const selectedPatientData = patients.find(patient => patient.id === parseInt(selectedPatient));
+    if (selectedPatientData) {
+      yOffset += 10; // Separación entre exámenes y datos del paciente
+      doc.text("Información del paciente:", 10, yOffset);
+      yOffset += 10;
+      doc.text(`Nombre: ${selectedPatientData.first_name}`, 10, yOffset);
+      yOffset += 7;
+      doc.text(`Apellido: ${selectedPatientData.last_name}`, 10, yOffset);
+      yOffset += 7;
+      doc.text(`Cédula: ${selectedPatientData.ci_number}`, 10, yOffset);
+      yOffset += 7;
+      doc.text(`Fecha de Nacimiento: ${selectedPatientData.born_date}`, 10, yOffset);
+    }
+
+    // Guardar el PDF con el nombre 'examenes.pdf'
+    doc.save('examenes.pdf');
+    axios.post('http://localhost:3001/lab', { template, patient: selectedPatientData.first_name })
+      .then(() => {
+        console.error('¡Éxito!');
+      })
+      .catch((error) => {
+        console.error('Error', error);
+      });
+
+    // Cerrar la ventana emergente después de enviar el PDF
+    setShowModal(false);
+
+  } catch (error) {
+    console.error('Error generating PDF:', error);
+  }
+};
+
 
   return (
     <div className="max-w-md mx-auto mt-8 p-6 bg-white rounded shadow-md">
@@ -567,11 +618,7 @@ function Transcripcion() {
              {/* Botón para cerrar la ventana emergente */}
             <button onClick={handleCloseModal} className="absolute top-0 right-0 m-4 text-gray-600 hover:text-gray-800 focus:outline-none">Cerrar</button>
             <div dangerouslySetInnerHTML={{ __html: template }} />
-            {images.map((imageUrl, index) => (
-              <div key={index} className="mb-4">
-                <img src={imageUrl} alt={`Examen ${index + 1}`} />
-              </div>
-            ))}
+            
              {/* Botón "Enviar" */}
              <div className="flex justify-center mt-4">
                <button onClick={handleSend} className="bg-teal-600 hover:bg-teal-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Enviar</button>

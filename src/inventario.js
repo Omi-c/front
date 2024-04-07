@@ -17,7 +17,7 @@ function Inventario() {
   }, []);
 
   const filteredInventario = inventario.filter(item =>
-    item.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+    item.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -48,9 +48,9 @@ function Inventario() {
           <tbody>
             {filteredInventario.map((producto, index) => (
               <tr key={index} className="hover:text-teal-600 cursor-default">
-                <td className="border px-4 py-2 text-center ">{producto.nombre}</td>
+                <td className="border px-4 py-2 text-center ">{producto.name}</td>
                 <td className="border px-4 py-2 text-center">
-                  {producto.existencias === 1 ? `${producto.existencias} unidad` : `${producto.existencias} unidades`}
+                  {producto.quantity === 1 ? `${producto.quantity} unidad` : `${producto.quantity} unidades`}
                 </td>
               </tr>
             ))}

@@ -18,7 +18,7 @@ function Sidebar() {
 
   const handleLogout = () => {
     // Recargar la página para cerrar sesión
-    window.location.reload();
+    window.location.href = '/';
   };
   
   return (
