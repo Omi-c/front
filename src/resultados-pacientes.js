@@ -12,14 +12,15 @@ function RegistroPacientes() {
       .then((res) => {
         setPatients(res.data);
       });
-  }, []);
+  }, [labResults]);
 
   // Manejar cambios en la selección del paciente
   const handlePatientChange = (e) => {
     setSelectedPatient(e.target.value);
     // Obtener los resultados de laboratorio del paciente seleccionado
-    axios.get(`http://localhost:3001/lab-results/${e.target.value}`)
+    axios.get(`http://localhost:3001/lab?patientId=${e.target.value}`)
       .then((res) => {
+        console.log(res.data);
         setLabResults(res.data);
       })
       .catch((error) => {
@@ -45,13 +46,26 @@ function RegistroPacientes() {
       </form>
       {/* Resultados de laboratorio */}
       <div className="mt-4">
-        {labResults.map((result) => (
-          <div key={result.id} id={result.id}>
-
-            <h4 className="text-md font-semibold">{result.name}</h4>
-            <p>{result.description}</p>
-          </div>
-        ))}
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Documento del examen</th>
+            </tr>
+          </thead>
+          <tbody>
+            {labResults.map((result) => (
+              <tr key={result.id}>
+                <td>{result.id}</td>
+                <td>
+                  <a href={`http://localhost:3001/${result.path}`} target="_blank" rel="noopener noreferrer">
+                    Ver examen
+                  </a>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
 
       {/* Botón para ver resultados de laboratorio */}
