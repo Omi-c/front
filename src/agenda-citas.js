@@ -5,12 +5,10 @@ function AgendaCitas() {
   const [patients, setPatients] = useState([]);
   const [selectedPatient, setSelectedPatient] = useState('');
   const [selectedDate, setSelectedDate] = useState('');
-  const [selectedTime, setSelectedTime] = useState('');
   const [appointments, setAppointments] = useState([]);
 
-  // Obtener la lista de pacientes registrados
   useEffect(() => {
-    axios.get('http://localhost:3001/patients')
+    axios.get('http://localhost:3001/citas')
       .then((res) => {
         setPatients(res.data);
       })
@@ -19,25 +17,20 @@ function AgendaCitas() {
       });
   }, []);
 
-  // Manejar el envío del formulario de cita
+  //formulario de cita
   const handleAppointmentSubmit = (e) => {
     e.preventDefault();
-    // Validar que se hayan seleccionado paciente, fecha y hora
-    if (selectedPatient && selectedDate && selectedTime) {
+    if (selectedPatient && selectedDate) {
       // Crear un nuevo objeto cita
       const newAppointment = {
         patient: selectedPatient,
-        date: selectedDate,
-        time: selectedTime
+        date: selectedDate
       };
       // Agregar la nueva cita al estado de citas
       setAppointments([...appointments, newAppointment]);
-      // Limpiar los campos del formulario 
       setSelectedPatient('');
       setSelectedDate('');
-      setSelectedTime('');
     } else {
-
       alert('Por favor complete todos los campos.');
     }
   };
@@ -61,11 +54,6 @@ function AgendaCitas() {
           <label htmlFor="date" className="block text-sm font-semibold mb-2">Seleccionar Fecha:</label>
           <input type="date" id="date" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} className="w-full border rounded py-2 px-3" />
         </div>
-        {/* Selector de hora */}
-        <div className="mb-4">
-          <label htmlFor="time" className="block text-sm font-semibold mb-2">Seleccionar Hora:</label>
-          <input type="time" id="time" value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)} className="w-full border rounded py-2 px-3" />
-        </div>
         {/* Botón para registrar la cita */}
         <div className="flex justify-center mt-4">
           <button type="submit" className="bg-teal-600 hover:bg-teal-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Listo</button>
@@ -79,7 +67,6 @@ function AgendaCitas() {
             <tr className="bg-gray-200">
               <th className="border border-gray-300 px-4 py-2">Paciente</th>
               <th className="border border-gray-300 px-4 py-2">Fecha</th>
-              <th className="border border-gray-300 px-4 py-2">Hora</th>
             </tr>
           </thead>
           <tbody>
@@ -88,7 +75,6 @@ function AgendaCitas() {
               <tr key={index}>
                 <td className="border border-gray-300 px-4 py-2">{appointment.patient}</td>
                 <td className="border border-gray-300 px-4 py-2">{appointment.date}</td>
-                <td className="border border-gray-300 px-4 py-2">{appointment.time}</td>
               </tr>
             ))}
           </tbody>

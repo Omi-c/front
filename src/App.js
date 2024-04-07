@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import loginImg from './Assets/laboratorio.jpg';
 import Sidebar from './sidebar';
-import VistaMedico from './vista-medico.js'; // Importa el componente VistaMedico
+import VistaMedico from './vista-medico.js'; //VistaMedico
 
 export default function Login() {
   const [usuario, setUsuario] = useState('');

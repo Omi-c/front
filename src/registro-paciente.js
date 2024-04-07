@@ -65,9 +65,7 @@ function RegistroPacientes() {
     };
     try {
       await axios.post('http://localhost:3001/patients', data);
-      // Mostrar ventana emergente al registrar correctamente
       setRegistroExitoso(true);
-      // Ocultar la ventana emergente después de 3 segundos
       setTimeout(() => {
         setRegistroExitoso(false);
       }, 3000);

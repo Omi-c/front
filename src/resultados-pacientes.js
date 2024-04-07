@@ -47,7 +47,6 @@ function RegistroPacientes() {
       <div className="mt-4">
         {labResults.map((result) => (
           <div key={result.id} id={result.id}>
-
             <h4 className="text-md font-semibold">{result.name}</h4>
             <p>{result.description}</p>
           </div>
@@ -56,7 +55,7 @@ function RegistroPacientes() {
 
       {/* Botón para ver resultados de laboratorio */}
       <div className="flex justify-center mt-4">
-        <button className="bg-teal-600 hover:bg-teal-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Ver resultados de laboratorio</button>
+        <button type="submit" className="bg-teal-600 hover:bg-teal-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Ver resultados de laboratorio</button>
       </div>
     </div>
   );

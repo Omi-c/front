@@ -491,92 +491,43 @@ function Transcripcion() {
   };
   
 
-const handleSend = async () => {
-  try {
-    const doc = new jsPDF();
-    let yOffset = 10;
+  const handleSend = async () => {
+    try {
+      const doc = new jsPDF();
+      let yOffset = 10;
   
-    // Agregar contenido de la plantilla al PDF
-    doc.setFontSize(12);
-    doc.text("Resultados de exámenes", 10, yOffset);
-    yOffset += 10;
-
-    // Validar campos de texto antes de enviar
-    const inputs = document.querySelectorAll('#exampleModal input[type="text"]');
-    let isValid = true;
-    inputs.forEach(input => {
-      if (!input.value || isNaN(input.value)) {
-        isValid = false;
-        return;
-      }
-    });
-
-    function validateInputs(...inputs) {
-      for (const input of inputs) {
-        if (!input.value || isNaN(input.value)) {
-          return false;
-        }
-      }
-      return true;
-    }
-
-    // Mapeo de nombres de exámenes a los identificadores de campos de entrada correspondientes
-    const examInputs = {
-      "Enzimas Cardiacas": ['#CK', '#CKMH', '#Troponina'], "Hematología": ['#Hemoglobina', '#Hematocritos', '#CHCM', '#GlobulosBlancos', '#Plaquetas', '#Neotrofilos', '#Linfocitos', '#Monocitos', '#Eosinofilos', '#Basofilos'],"Prueba de Orina": ['#Color', '#Proteinas', '#Glucosa', '#Hemoglobina', '#PH', '#Hematies', '#Densidad', '#Cantidad'],
-      "Prueba de Heces": ['#ColorHeces', '#OlorHeces', '#AspectoHeces', '#ConsistenciaHeces', '#ReaccionHeces'], "VSG": ['#Eritrosedimentacion'], "PCR": ['#PCR'], "PT, PTT": ['#PT', '#PTT'], "Química Sanguínea": ['#Glucosa', '#Colesterol', '#Creatinina', '#Urea', '#Trigliceridos', '#Bilirrubina']
-    };
-
-    // Validación de los campos de exámenes de laboratorio
-    for (const exam in examInputs) {
-      if (selectedTests.includes(exam)) {
-        const examFields = examInputs[exam].map(field => document.querySelector(field));
-        isValid = validateInputs(...examFields);
-      }
-    }
-    if (!isValid) {
-      alert("Por favor, complete todos los campos de texto con valores numéricos.");
-      return;
-    }
-
-    // Agregar información de los exámenes al PDF
-    selectedTests.forEach((test, index) => {
-      const examData = `Examen ${index + 1}: ${test}`;
-      doc.text(examData, 10, yOffset);
+      // Agregar contenido de la plantilla al PDF
+      doc.setFontSize(12);
+      doc.text(template, 10, yOffset);
       yOffset += 10;
-    });
-
-    // Agregar información del paciente al PDF
-    const selectedPatientData = patients.find(patient => patient.id === parseInt(selectedPatient));
-    if (selectedPatientData) {
-      yOffset += 10; // Separación entre exámenes y datos del paciente
-      doc.text("Información del paciente:", 10, yOffset);
-      yOffset += 10;
-      doc.text(`Nombre: ${selectedPatientData.first_name}`, 10, yOffset);
-      yOffset += 7;
-      doc.text(`Apellido: ${selectedPatientData.last_name}`, 10, yOffset);
-      yOffset += 7;
-      doc.text(`Cédula: ${selectedPatientData.ci_number}`, 10, yOffset);
-      yOffset += 7;
-      doc.text(`Fecha de Nacimiento: ${selectedPatientData.born_date}`, 10, yOffset);
-    }
-
-    // Guardar el PDF con el nombre 'examenes.pdf'
-    doc.save('examenes.pdf');
-    axios.post('http://localhost:3001/lab', { template, patient: selectedPatientData.first_name })
+  
+      // Agregar información de los exámenes al PDF
+      let textData = '';
+      selectedTests.forEach((test, index) => {
+        const examData = `Examen ${index + 1}: ${test}`;
+        textData += examData;
+        doc.text(examData, 10, yOffset);
+        yOffset += 10;
+   
+      });
+  
+      // Guardar el PDF con el nombre 'examenes.pdf'
+      doc.save('examenes.pdf');
+      axios.post('http://localhost:3001/lab', {textData, template, patient: patients.find(patient => patient.id === parseInt(selectedPatient)).first_name})
       .then(() => {
-        console.error('¡Éxito!');
+        console.error('Nice!');
       })
       .catch((error) => {
         console.error('Error', error);
       });
-
-    // Cerrar la ventana emergente después de enviar el PDF
-    setShowModal(false);
-
-  } catch (error) {
-    console.error('Error generating PDF:', error);
-  }
-};
+  
+      // Cerrar la ventana emergente después de enviar el PDF
+      setShowModal(false);
+  
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+    }
+  };
 
 
   return (
