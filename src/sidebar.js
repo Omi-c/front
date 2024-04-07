@@ -7,6 +7,7 @@ import RegistroPacientes from './registro-paciente.js';
 import PacientesRegistrados from './pacientes-registrados.js';
 import ListaPrecios from './lista-precios.js';
 import Transcripcion from './transcripcion.js';
+import CitasAgendadas from './citas-agendadas.js';
 import { HomeIcon, UserAddIcon, UsersIcon, CurrencyDollarIcon, ArchiveIcon, ClipboardCopyIcon, PencilAltIcon, LogoutIcon, MenuIcon } from '@heroicons/react/outline';
 
 function Sidebar() {
@@ -75,6 +76,20 @@ function Sidebar() {
                     <Link to="/registro-inventario" className="py-2 px-4 text-white">Registrar inventario</Link>
                   </div>
                 </li>
+
+                <li>
+                  <div className="flex items-center hover:bg-teal-500">
+                    <UserAddIcon className="h-5 w-5 mr-2 text-white" />
+                    <Link to="/registro-paciente" className="py-2 px-4 text-white">Registrar Paciente</Link>
+                  </div>
+                </li>
+
+                <li>
+                  <div className="flex items-center hover:bg-teal-500">
+                    <UserAddIcon className="h-5 w-5 mr-2 text-white" />
+                    <Link to="/citas-agendadas" className="py-2 px-4 text-white">Citas Agendadas</Link>
+                  </div>
+                </li>
                 <li>
                   <div className="flex items-center hover:bg-teal-500" onClick={handleLogout}>
                     <LogoutIcon className="h-5 w-5 mr-2 text-white" />
@@ -101,6 +116,7 @@ function Sidebar() {
               <Route path="/lista-precios" element={<ListaPrecios />} />
               <Route path="/inventario" element={<Inventario />} />
               <Route path="/registro-inventario" element={<RegistroInventario />} />
+              <Route path="/citas-agendadas" element={<CitasAgendadas />} />
             </Routes>
           </div>
         </div>

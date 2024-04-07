@@ -8,7 +8,7 @@ function AgendaCitas() {
   const [appointments, setAppointments] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:3001/citas')
+    axios.get('http://localhost:3001/patients')
       .then((res) => {
         setPatients(res.data);
       })
@@ -26,6 +26,16 @@ function AgendaCitas() {
         patient: selectedPatient,
         date: selectedDate
       };
+
+      // Añadir cita a la base de datos
+      axios.post('http://localhost:3001/citas', newAppointment)
+        .then(response => {
+          console.log("Cita añadida correctamente a la base de datos.");
+        })
+        .catch(error => {
+          console.error('Error al añadir la cita a la base de datos:', error);
+        });
+
       // Agregar la nueva cita al estado de citas
       setAppointments([...appointments, newAppointment]);
       setSelectedPatient('');

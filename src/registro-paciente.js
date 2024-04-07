@@ -34,8 +34,8 @@ function RegistroPacientes() {
 
   const handleCedulaChange = (e) => {
     let input = e.target.value.replace(/\D/g, ''); // Sólo números
-    // Limitar el número de caracteres a 7
-    input = input.substring(0, 7);
+    // Limitar el número de caracteres a 8
+    input = input.substring(0, 8);
     setCedula(input);
   };
 

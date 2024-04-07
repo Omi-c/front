@@ -46,26 +46,13 @@ function RegistroPacientes() {
       </form>
       {/* Resultados de laboratorio */}
       <div className="mt-4">
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Documento del examen</th>
-            </tr>
-          </thead>
-          <tbody>
-            {labResults.map((result) => (
-              <tr key={result.id}>
-                <td>{result.id}</td>
-                <td>
-                  <a href={`http://localhost:3001/${result.path}`} target="_blank" rel="noopener noreferrer">
-                    Ver examen
-                  </a>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        {labResults.map((result) => (
+          <div key={result.id} id={result.id}>
+
+            <h4 className="text-md font-semibold">{result.name}</h4>
+            <p>{result.description}</p>
+          </div>
+        ))}
       </div>
 
       {/* Botón para ver resultados de laboratorio */}
