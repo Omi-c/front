@@ -14,6 +14,15 @@ function CitasAgendadas() {
       });
   }, []);
 
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = date.getMonth() + 1; // Se suma 1 porque los meses van de 0 a 11
+    const year = date.getFullYear();
+
+    return `${day}/${month}/${year}`;
+  }
+
   return (
     <div className="max-w-md mx-auto mt-8 p-6 bg-white rounded shadow-md">
       <h2 className="text-2xl font-bold mb-4 text-center">Citas Agendadas</h2>
@@ -29,7 +38,7 @@ function CitasAgendadas() {
             {appointments.map((appointment, index) => (
               <tr key={index}>
                 <td className="border border-gray-300 px-4 py-2">{appointment.patient}</td>
-                <td className="border border-gray-300 px-4 py-2">{appointment.date}</td>
+                <td className="border border-gray-300 px-4 py-2">{formatDate(appointment.date)}</td>
               </tr>
             ))}
           </tbody>
