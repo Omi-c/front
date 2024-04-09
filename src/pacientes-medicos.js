@@ -52,10 +52,6 @@ function PacientesRegistrados() {
     setModalOpen(false);
   };
 
-  // Función para eliminar temporalmente un paciente de la lista
-  const deletePatient = (id) => {
-    setPatients(patients.filter(patient => patient.id !== id));
-  };
 
   // Filtrar pacientes basado en el valor de búsqueda
   const filteredPatients = patients.filter((patient) =>
@@ -200,7 +196,6 @@ function PacientesRegistrados() {
             <th className="px-4 py-2 bg-gray-200 text-gray-700 border">Fecha de nacimiento</th>
             <th className="px-4 py-2 bg-gray-200 text-gray-700 border">Teléfono</th>
             <th className="px-4 py-2 bg-gray-200 text-gray-700 border">Email</th>
-            <th className="px-4 py-2 bg-gray-200 text-gray-700 border">Acciones</th>
           </tr>
         </thead>
         <tbody className="text-center">
@@ -212,14 +207,6 @@ function PacientesRegistrados() {
               <td className="px-4 py-2 border">{formatDate(patient.born_date)}</td>
               <td className="px-4 py-2 border">{patient.mobile}</td>
               <td className="px-4 py-2 border">{patient.email}</td>
-              <td className="px-4 py-2 border">
-                <button onClick={() => openModal(patient)} className="text-blue-500 hover:text-blue-700 mr-2">
-                  Editar
-                </button>
-                <button onClick={() => deletePatient(patient.id)} className="text-red-500 hover:text-red-700">
-                  Eliminar
-                </button>
-              </td>
             </tr>
           ))}
         </tbody>

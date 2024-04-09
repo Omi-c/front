@@ -20,7 +20,6 @@ function RegistroPacientes() {
     // Obtener los resultados de laboratorio del paciente seleccionado
     axios.get(`http://localhost:3001/lab?patientId=${e.target.value}`)
       .then((res) => {
-        console.log(res.data);
         setLabResults(res.data);
       })
       .catch((error) => {

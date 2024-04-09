@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import jsPDF from 'jspdf'; // biblioteca para generar PDF
+import logo from './Assets/logo.png'; 
 
 function Transcripcion() {
   const [patients, setPatients] = useState([]);
@@ -31,6 +32,28 @@ function Transcripcion() {
     }
   };
 
+   //  membrete 
+   const generarMembrete = (doc) => {
+    const imgData = logo; 
+    const imgWidth = 50; 
+    const imgHeight = 50; 
+
+    doc.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
+
+    const membrete = "Laboratorio Clínico Loma Linda Carreño\nVenezuela, Edo. Carabobo. Guacara, Negro Primero";
+    doc.setFontSize(12);
+    doc.text(membrete, 70, 35);
+  };
+
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = date.getMonth() + 1; // Se suma 1 porque los meses van de 0 a 11
+    const year = date.getFullYear();
+
+    return `${day}/${month}/${year}`;
+  }
+
   // Plantillas de los exámenes
   const generateTemplate = (selectedTests) => {
     let template = '';
@@ -53,7 +76,7 @@ function Transcripcion() {
               <p>Nombre: ${patients.find(patient => patient.id === parseInt(selectedPatient)).first_name}</p>
               <p>Apellido: ${patients.find(patient => patient.id === parseInt(selectedPatient)).last_name}</p>
               <p>Cédula: ${patients.find(patient => patient.id === parseInt(selectedPatient)).ci_number}</p>
-              <p>Fecha de Nacimiento: ${patients.find(patient => patient.id === parseInt(selectedPatient)).born_date}</p>
+              <p>Fecha de Nacimiento: ${formatDate(patients.find(patient => patient.id === parseInt(selectedPatient)).born_date)}</p>
               <div class="mt-6"> 
               <p>Estado: <select><option value="positivo">Positivo</option><option value="negativo">Negativo</option></select></p>
             </div>
@@ -70,7 +93,7 @@ function Transcripcion() {
               <p>Nombre: ${patients.find(patient => patient.id === parseInt(selectedPatient)).first_name}</p>
               <p>Apellido: ${patients.find(patient => patient.id === parseInt(selectedPatient)).last_name}</p>
               <p>Cédula: ${patients.find(patient => patient.id === parseInt(selectedPatient)).ci_number}</p>
-              <p>Fecha de Nacimiento: ${patients.find(patient => patient.id === parseInt(selectedPatient)).born_date}</p>
+              <p>Fecha de Nacimiento: ${formatDate(patients.find(patient => patient.id === parseInt(selectedPatient)).born_date)}</p>
               ${test === 'Enzimas Cardiacas' ? `
               <div class="grid grid-cols-2 gap-4 mt-6">
                 <div>
@@ -101,7 +124,7 @@ function Transcripcion() {
               <p>Nombre: ${patients.find(patient => patient.id === parseInt(selectedPatient)).first_name}</p>
               <p>Apellido: ${patients.find(patient => patient.id === parseInt(selectedPatient)).last_name}</p>
               <p>Cédula: ${patients.find(patient => patient.id === parseInt(selectedPatient)).ci_number}</p>
-              <p>Fecha de Nacimiento: ${patients.find(patient => patient.id === parseInt(selectedPatient)).born_date}</p>
+              <p>Fecha de Nacimiento: ${formatDate(patients.find(patient => patient.id === parseInt(selectedPatient)).born_date)}</p>
               ${test === 'Grupo Sanguíneo' ? `
               <div class="grid grid-cols-2 gap-4 mt-6"> 
                 <label for="grupoSanguineo" class="block text-sm font-semibold mb-2">Grupo sanguíneo:</label>
@@ -127,7 +150,7 @@ function Transcripcion() {
                 <p>Nombre: ${patients.find(patient => patient.id === parseInt(selectedPatient)).first_name}</p>
                 <p>Apellido: ${patients.find(patient => patient.id === parseInt(selectedPatient)).last_name}</p>
                 <p>Cédula: ${patients.find(patient => patient.id === parseInt(selectedPatient)).ci_number}</p>
-                <p>Fecha de Nacimiento: ${patients.find(patient => patient.id === parseInt(selectedPatient)).born_date}</p>
+                <p>Fecha de Nacimiento: ${formatDate(patients.find(patient => patient.id === parseInt(selectedPatient)).born_date)}</p>
                 ${test === 'Hematología' ? `
                 <div class="grid grid-cols-2 gap-4 mt-6">
                   <div>
@@ -186,7 +209,7 @@ function Transcripcion() {
                   <p>Nombre: ${patients.find(patient => patient.id === parseInt(selectedPatient)).first_name}</p>
                   <p>Apellido: ${patients.find(patient => patient.id === parseInt(selectedPatient)).last_name}</p>
                   <p>Cédula: ${patients.find(patient => patient.id === parseInt(selectedPatient)).ci_number}</p>
-                  <p>Fecha de Nacimiento: ${patients.find(patient => patient.id === parseInt(selectedPatient)).born_date}</p>
+                  <p>Fecha de Nacimiento: ${formatDate(patients.find(patient => patient.id === parseInt(selectedPatient)).born_date)}</p>
                   ${test === 'Prueba de Orina' ? `
                   <div class="grid grid-cols-2 gap-4">
                     <div>
@@ -295,7 +318,7 @@ function Transcripcion() {
                     <p>Nombre: ${patients.find(patient => patient.id === parseInt(selectedPatient)).first_name}</p>
                     <p>Apellido: ${patients.find(patient => patient.id === parseInt(selectedPatient)).last_name}</p>
                     <p>Cédula: ${patients.find(patient => patient.id === parseInt(selectedPatient)).ci_number}</p>
-                    <p>Fecha de Nacimiento: ${patients.find(patient => patient.id === parseInt(selectedPatient)).born_date}</p>
+                    <p>Fecha de Nacimiento: ${formatDate(patients.find(patient => patient.id === parseInt(selectedPatient)).born_date)}</p>
                     ${test === 'Prueba de Heces' ? `
                     <div class="grid grid-cols-2 gap-4">
                       <div>
@@ -358,7 +381,7 @@ function Transcripcion() {
               <p>Nombre: ${patients.find(patient => patient.id === parseInt(selectedPatient)).first_name}</p>
               <p>Apellido: ${patients.find(patient => patient.id === parseInt(selectedPatient)).last_name}</p>
               <p>Cédula: ${patients.find(patient => patient.id === parseInt(selectedPatient)).ci_number}</p>
-              <p>Fecha de Nacimiento: ${patients.find(patient => patient.id === parseInt(selectedPatient)).born_date}</p>
+              <p>Fecha de Nacimiento: ${formatDate(patients.find(patient => patient.id === parseInt(selectedPatient)).born_date)}</p>
               ${test === 'VSG' ? `
               <div class="flex mt-6"> 
                 <div class="w-full md:w-1/2"> 
@@ -382,7 +405,7 @@ function Transcripcion() {
               <p>Nombre: ${patients.find(patient => patient.id === parseInt(selectedPatient)).first_name}</p>
               <p>Apellido: ${patients.find(patient => patient.id === parseInt(selectedPatient)).last_name}</p>
               <p>Cédula: ${patients.find(patient => patient.id === parseInt(selectedPatient)).ci_number}</p>
-              <p>Fecha de Nacimiento: ${patients.find(patient => patient.id === parseInt(selectedPatient)).born_date}</p>
+              <p>Fecha de Nacimiento: ${formatDate(patients.find(patient => patient.id === parseInt(selectedPatient)).born_date)}</p>
               ${test === 'PCR' ? `
               <div class="flex flex-col mt-6">
                 <div class="w-full md:w-1/2">
@@ -406,7 +429,7 @@ function Transcripcion() {
               <p>Nombre: ${patients.find(patient => patient.id === parseInt(selectedPatient)).first_name}</p>
               <p>Apellido: ${patients.find(patient => patient.id === parseInt(selectedPatient)).last_name}</p>
               <p>Cédula: ${patients.find(patient => patient.id === parseInt(selectedPatient)).ci_number}</p>
-              <p>Fecha de Nacimiento: ${patients.find(patient => patient.id === parseInt(selectedPatient)).born_date}</p>
+              <p>Fecha de Nacimiento: ${formatDate(patients.find(patient => patient.id === parseInt(selectedPatient)).born_date)}</p>
               ${test === 'PT, PTT' ? `
               <div class="grid grid-cols-2 gap-4 mt-6">
                 <div>
@@ -433,7 +456,7 @@ function Transcripcion() {
                 <p>Nombre: ${patients.find(patient => patient.id === parseInt(selectedPatient)).first_name}</p>
                 <p>Apellido: ${patients.find(patient => patient.id === parseInt(selectedPatient)).last_name}</p>
                 <p>Cédula: ${patients.find(patient => patient.id === parseInt(selectedPatient)).ci_number}</p>
-                <p>Fecha de Nacimiento: ${patients.find(patient => patient.id === parseInt(selectedPatient)).born_date}</p>
+                <p>Fecha de Nacimiento: ${formatDate(patients.find(patient => patient.id === parseInt(selectedPatient)).born_date)}</p>
                 ${test === 'Química Sanguínea' ? `
                 <div class="grid grid-cols-2 gap-4 mt-6">
                   <div>
@@ -496,11 +519,15 @@ function Transcripcion() {
       const doc = new jsPDF();
       let yOffset = 10;
 
+      // Añadir membrete al PDF
+      generarMembrete(doc);
+      yOffset += 65;
+  
       // Agregar contenido de la plantilla al PDF
       doc.setFontSize(12);
-      doc.text("Resultados de exámenes", 10, yOffset);
-      yOffset += 10;
-
+      doc.text("Resultados de Análisis de Laboratorio", 10, yOffset);
+      yOffset += 5;
+  
       // Validar campos de texto antes de enviar
       const inputs = document.querySelectorAll('#exampleModal input[type="text"]');
       let isValid = true;
@@ -510,7 +537,7 @@ function Transcripcion() {
           return;
         }
       });
-
+  
       function validateInputs(...inputs) {
         for (const input of inputs) {
           if (!input.value || isNaN(input.value)) {
@@ -519,13 +546,19 @@ function Transcripcion() {
         }
         return true;
       }
-
+  
       // Mapeo de nombres de exámenes a los identificadores de campos de entrada correspondientes
       const examInputs = {
-        "Enzimas Cardiacas": ['#CK', '#CKMH', '#Troponina'], "Hematología": ['#Hemoglobina', '#Hematocritos', '#CHCM', '#GlobulosBlancos', '#Plaquetas', '#Neotrofilos', '#Linfocitos', '#Monocitos', '#Eosinofilos', '#Basofilos'], "Prueba de Orina": ['#Color', '#Proteinas', '#Glucosa', '#Hemoglobina', '#PH', '#Hematies', '#Densidad', '#Cantidad'],
-        "Prueba de Heces": ['#ColorHeces', '#OlorHeces', '#AspectoHeces', '#ConsistenciaHeces', '#ReaccionHeces'], "VSG": ['#Eritrosedimentacion'], "PCR": ['#PCR'], "PT, PTT": ['#PT', '#PTT'], "Química Sanguínea": ['#Glucosa', '#Colesterol', '#Creatinina', '#Urea', '#Trigliceridos', '#Bilirrubina']
+        "Enzimas Cardiacas": ['#CK', '#CKMH', '#Troponina'], 
+        "Hematología": ['#Hemoglobina', '#Hematocritos', '#CHCM', '#GlobulosBlancos', '#Plaquetas', '#Neotrofilos', '#Linfocitos', '#Monocitos', '#Eosinofilos', '#Basofilos'], 
+        "Prueba de Orina": ['#Color', '#Proteinas', '#Glucosa', '#Hemoglobina', '#PH', '#Hematies', '#Densidad', '#Cantidad'],
+        "Prueba de Heces": ['#ColorHeces', '#OlorHeces', '#AspectoHeces', '#ConsistenciaHeces', '#ReaccionHeces'], 
+        "VSG": ['#Eritrosedimentacion'], 
+        "PCR": ['#PCR'], 
+        "PT, PTT": ['#PT', '#PTT'], 
+        "Química Sanguínea": ['#Glucosa', '#Colesterol', '#Creatinina', '#Urea', '#Trigliceridos', '#Bilirrubina']
       };
-
+  
       // Validación de los campos de exámenes de laboratorio
       for (const exam in examInputs) {
         if (selectedTests.includes(exam)) {
@@ -538,28 +571,211 @@ function Transcripcion() {
         return;
       }
 
-      // Agregar información de los exámenes al PDF
-      selectedTests.forEach((test, index) => {
-        const examData = `Examen ${index + 1}: ${test}`;
-        doc.text(examData, 10, yOffset);
-        yOffset += 10;
-      });
-
       // Agregar información del paciente al PDF
       const selectedPatientData = patients.find(patient => patient.id === parseInt(selectedPatient));
       if (selectedPatientData) {
         yOffset += 10; // Separación entre exámenes y datos del paciente
         doc.text("Información del paciente:", 10, yOffset);
-        yOffset += 10;
+        yOffset += 7;
         doc.text(`Nombre: ${selectedPatientData.first_name}`, 10, yOffset);
         yOffset += 7;
         doc.text(`Apellido: ${selectedPatientData.last_name}`, 10, yOffset);
         yOffset += 7;
         doc.text(`Cédula: ${selectedPatientData.ci_number}`, 10, yOffset);
         yOffset += 7;
-        doc.text(`Fecha de Nacimiento: ${selectedPatientData.born_date}`, 10, yOffset);
+        doc.text(`Fecha de Nacimiento: ${formatDate(selectedPatientData.born_date)}`, 10, yOffset);
+        yOffset += 15;
       }
+  
+      // Agregar información de los exámenes al PDF
+      selectedTests.forEach((test, index) => {
+        const examData = `Examen ${index + 1}: ${test}`;
+        doc.text(examData, 10, yOffset);
+        yOffset += 10;
+  
+        // Agregar resultados del examen
+        switch (test) {
+          case 'Prueba de HIV':
+          case 'VDRL':
+          case 'Antidoping':
+          case 'Prueba de COVID':
+          case 'Urocultivo':
+          case 'Prueba de Embarazo':
+          case 'Dengue':
+          case 'Hepatitis B':
+          case 'Exudado Faringeo':
+            doc.text("Valores del análisis:", 10, yOffset);
+            yOffset += 7;
+            doc.text("Estado:", 10, yOffset);
+           
+            const selectOptions = ["Positivo", "Negativo"];
+            const selectedOption = selectOptions[Math.floor(Math.random() * selectOptions.length)];
+            doc.text(selectedOption, 25, yOffset);
+            yOffset += 10; 
+            break;
+          case 'Enzimas Cardiacas':
+            doc.text("Valores del análisis: ", 10, yOffset);
+            yOffset += 7;
+            doc.text(`CK: ${document.querySelector('#CK').value}`, 10, yOffset);
+            yOffset += 7;
+            doc.text(`CKMH: ${document.querySelector('#CKMH').value}`, 10, yOffset);
+            yOffset += 7;
+            doc.text(`Troponina: ${document.querySelector('#Troponina').value}`, 10, yOffset);
+            yOffset += 10;
+            break;         
+          case 'Hematología':
+              doc.text("Valores del análisis:", 10, yOffset);
+              yOffset += 7;
+              // Añadir resultados de los exámenes de hematología
+              doc.text("Hemoglobina: " + document.querySelector('#Hemoglobina').value, 10, yOffset);
+              yOffset += 7;
+              doc.text("Hematocritos: " + document.querySelector('#Hematocritos').value, 10, yOffset);
+              yOffset += 7;
+              doc.text("CHCM: " + document.querySelector('#CHCM').value, 10, yOffset);
+              yOffset += 7;
+              doc.text("Glóbulos blancos: " + document.querySelector('#GlobulosBlancos').value, 10, yOffset);
+              yOffset += 7;
+              doc.text("Plaquetas: " + document.querySelector('#Plaquetas').value, 10, yOffset);
+              yOffset += 7;
+              doc.text("Neotrofilos: " + document.querySelector('#Neotrofilos').value + "%", 10, yOffset);
+              yOffset += 7;
+              doc.text("Linfocitos: " + document.querySelector('#Linfocitos').value + "%", 10, yOffset);
+              yOffset += 7;
+              doc.text("Monocitos: " + document.querySelector('#Monocitos').value + "%", 10, yOffset);
+              yOffset += 7;
+              doc.text("Eosinofilos: " + document.querySelector('#Eosinofilos').value + "%", 10, yOffset);
+              yOffset += 7;
+              doc.text("Basofilos: " + document.querySelector('#Basofilos').value + "%", 10, yOffset);
+              yOffset += 10;
+              break;
+          case 'Prueba de Orina':
+                doc.text("Valores del análisis:", 10, yOffset);
+                yOffset += 7;
+                
+                // Añadir resultados de la prueba de orina
+                doc.text("Color: " + document.querySelector('#Color').value, 10, yOffset);
+                yOffset += 7;
+                doc.text("Proteinas: " + document.querySelector('#Proteinas').value, 10, yOffset);
+                yOffset += 7;
+                doc.text("Glucosa: " + document.querySelector('#Glucosa').value, 10, yOffset);
+                yOffset += 7;
+                doc.text("Hemoglobina: " + document.querySelector('#Hemoglobina').value, 10, yOffset);
+                yOffset += 7;
+                doc.text("PH: " + document.querySelector('#PH').value, 10, yOffset);
+                yOffset += 7;
+                doc.text("Hematies: " + document.querySelector('#Hematies').value, 10, yOffset);
+                yOffset += 7;
+                doc.text("Densidad: " + document.querySelector('#Densidad').value, 10, yOffset);
+                yOffset += 7;
+                doc.text("Cantidad: " + document.querySelector('#Cantidad').value, 10, yOffset);
+                yOffset += 7;
+                
+                doc.text("Nitritos: " + document.querySelector('#Nitritos').options[document.querySelector('#Nitritos').selectedIndex].text, 10, yOffset);
+                yOffset += 7;
+                doc.text("Bilirrubina: " + document.querySelector('#Bilirrubina').options[document.querySelector('#Bilirrubina').selectedIndex].text, 10, yOffset);
+                yOffset += 7;
+                doc.text("Urobilina: " + document.querySelector('#Urobilina').options[document.querySelector('#Urobilina').selectedIndex].text, 10, yOffset);
+                yOffset += 7;
+                doc.text("Pig. Bili: " + document.querySelector('#PigBili').options[document.querySelector('#PigBili').selectedIndex].text, 10, yOffset);
+                yOffset += 7;
+                doc.text("Cetona: " + document.querySelector('#Cetona').options[document.querySelector('#Cetona').selectedIndex].text, 10, yOffset);
+                yOffset += 7;
+                doc.text("Cristales: " + document.querySelector('#Cristales').options[document.querySelector('#Cristales').selectedIndex].text, 10, yOffset);
+                yOffset += 7;
+                doc.text("Bacterias: " + document.querySelector('#Bacterias').options[document.querySelector('#Bacterias').selectedIndex].text, 10, yOffset);
+                yOffset += 7;
+                doc.text("Mucina: " + document.querySelector('#Mucina').options[document.querySelector('#Mucina').selectedIndex].text, 10, yOffset);
+                yOffset += 10;
+                break;   
+          case 'Prueba de Heces':
+                  doc.text("Valores del análisis:", 10, yOffset);
+                  yOffset += 7;
+                  
+                  // Añadir resultados de la prueba de heces
+                  doc.text("Color: " + document.querySelector('#ColorHeces').value, 10, yOffset);
+                  yOffset += 7;
+                  doc.text("Olor: " + document.querySelector('#OlorHeces').value, 10, yOffset);
+                  yOffset += 7;
+                  doc.text("Aspecto: " + document.querySelector('#AspectoHeces').value, 10, yOffset);
+                  yOffset += 7;
+                  doc.text("Consistencia: " + document.querySelector('#ConsistenciaHeces').value, 10, yOffset);
+                  yOffset += 7;
+                  doc.text("Reacción: " + document.querySelector('#ReaccionHeces').value, 10, yOffset);
+                  yOffset += 7;
+                  
+                  const selectedSangreHeces = document.querySelector('#SangreHeces').options[document.querySelector('#SangreHeces').selectedIndex].text;
+                  doc.text("Sangre: " + selectedSangreHeces, 10, yOffset);
+                  yOffset += 7;
+                  
+                  const selectedMocoHeces = document.querySelector('#MocoHeces').options[document.querySelector('#MocoHeces').selectedIndex].text;
+                  doc.text("Moco: " + selectedMocoHeces, 10, yOffset);
+                  yOffset += 7;
+                  
+                  const selectedDetritosHeces = document.querySelector('#DetritosHeces').options[document.querySelector('#DetritosHeces').selectedIndex].text;
+                  doc.text("Detritos: " + selectedDetritosHeces, 10, yOffset);
+                  yOffset += 10;
+                  break;             
+          case 'VSG':
+            doc.text("Valores del análisis:", 10, yOffset);
+            yOffset += 7;
+                    
+            doc.text("Eritrosedimentación: " + document.querySelector('#Eritrosedimentacion').value + " mm/1h", 10, yOffset);
+            yOffset += 10;
+          break;        
+          case 'PCR':
+          doc.text("Valores del análisis:", 10, yOffset);
+          yOffset += 7;
+          doc.text("PCR: " + document.querySelector('#PCR').value + " mg/L", 10, yOffset);
+          yOffset += 7;
+          doc.text("Valor de referencia: Hasta 6,0 mg/L", 10, yOffset);
+          yOffset += 10;
+          break;
+          case 'PT, PTT':
+          doc.text("Valores del análisis:", 10, yOffset);
+          yOffset += 7;
+          doc.text("PT: " + document.querySelector('#PT').value, 10, yOffset);
+          yOffset += 7;
+          doc.text("PTT: " + document.querySelector('#PTT').value, 10, yOffset);
+          yOffset += 10;
+          break;
+          case 'Química Sanguínea':
+          doc.text("Valores del análisis:", 10, yOffset);
+          yOffset += 7;
+        
+          doc.text("Glucosa: " + document.querySelector('#Glucosa').value + " mg/dL", 10, yOffset);
+          yOffset += 7;
+          doc.text("Colesterol: " + document.querySelector('#Colesterol').value + " mg/dL", 10, yOffset);
+          yOffset += 7;
+          doc.text("Creatinina: " + document.querySelector('#Creatinina').value + " mg/dL", 10, yOffset);
+          yOffset += 7;
+          doc.text("Urea: " + document.querySelector('#Urea').value + " mg/dL", 10, yOffset);
+          yOffset += 7;
+          doc.text("Trigliceridos: " + document.querySelector('#Trigliceridos').value + " mg/dL", 10, yOffset);
+          yOffset += 7;
+          doc.text("Bilirrubina: " + document.querySelector('#Bilirrubina').value + " mg/dL", 10, yOffset);
+          yOffset += 10;
+          break;
+          case 'Grupo Sanguíneo':
+          doc.text("Valores del análisis:", 10, yOffset);
+          yOffset += 7;
+          
+          // Obtener el valor seleccionado del campo de selección
+          var grupoSanguineoSelect = document.querySelector('#grupoSanguineo');
+          var grupoSanguineo = grupoSanguineoSelect.options[grupoSanguineoSelect.selectedIndex].text;
 
+          // Añadir resultados de Grupo Sanguíneo
+          doc.text("Grupo sanguíneo: " + grupoSanguineo, 10, yOffset);
+          yOffset += 10;
+          break;
+
+
+          default:
+            break;
+        }
+      });
+  
+      
+  
       // Guardar el PDF con el nombre 'examenes.pdf'
       doc.save('examenes.pdf');
       axios.post('http://localhost:3001/lab', { template, patient: selectedPatientData })
@@ -569,15 +785,15 @@ function Transcripcion() {
         .catch((error) => {
           console.error('Error', error);
         });
-
+  
       // Cerrar la ventana emergente después de enviar el PDF
       setShowModal(false);
-
+  
     } catch (error) {
       console.error('Error generating PDF:', error);
     }
   };
-
+  
 
   return (
     <div className="max-w-md mx-auto mt-8 p-6 bg-white rounded shadow-md">

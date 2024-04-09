@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
 import Inicio from './inicio.js';
-import PacientesRegistrados from './pacientes-registrados.js';
+import PacientesMedicos from './pacientes-medicos.js';
 import ResultadosPacientes from './resultados-pacientes.js';
 import AgendaCitas from "./agenda-citas.js";
 import ListaPrecios from './lista-precios.js';
-import { HomeIcon, MailIcon, UserAddIcon, UsersIcon, CurrencyDollarIcon, MenuIcon, ArchiveIcon, ClipboardCopyIcon, PencilAltIcon, LogoutIcon } from '@heroicons/react/outline';
+import { HomeIcon, UsersIcon, CurrencyDollarIcon, MenuIcon, PencilAltIcon, LogoutIcon, BookOpenIcon } from '@heroicons/react/outline';
 
 function VistaMedico() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -42,13 +42,13 @@ function VistaMedico() {
                 <li>
                   <div className="flex items-center hover:bg-teal-500">
                     <UsersIcon className="h-5 w-5 mr-2 text-white" />
-                    <Link to="/pacientes-registrados" className="py-2 px-4 text-white">Pacientes Registrados</Link>
+                    <Link to="/pacientes-medicos" className="py-2 px-4 text-white">Pacientes Registrados</Link>
                   </div>
                 </li>
 
                 <li>
                   <div className="flex items-center hover:bg-teal-500">
-                    <UsersIcon className="h-5 w-5 mr-2 text-white" />
+                    <BookOpenIcon className="h-5 w-5 mr-2 text-white" />
                     <Link to="/resultados-pacientes" className="py-2 px-4 text-white">Resultados de Pacientes</Link>
                   </div>
                 </li>
@@ -62,7 +62,7 @@ function VistaMedico() {
 
                 <li>
                   <div className="flex items-center hover:bg-teal-500">
-                    <HomeIcon className="h-5 w-5 mr-2 text-white" />
+                    <PencilAltIcon className="h-5 w-5 mr-2 text-white" />
                     <Link to="/agenda-citas" className="py-2 px-4 text-white">Agendar Cita</Link>
                   </div>
                 </li>
@@ -88,7 +88,7 @@ function VistaMedico() {
           <div className="p-4 flex-1">
             <Routes>
               <Route path="/" element={<Inicio />} />
-              <Route path="/pacientes-registrados" element={<PacientesRegistrados />} />
+              <Route path="/pacientes-medicos" element={<PacientesMedicos />} />
               <Route path="/lista-precios" element={<ListaPrecios />} />
               <Route path="/resultados-pacientes" element={<ResultadosPacientes />} />
               <Route path="/agenda-citas" element={<AgendaCitas />} />

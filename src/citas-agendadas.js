@@ -37,8 +37,8 @@ function CitasAgendadas() {
           <tbody>
             {appointments.map((appointment, index) => (
               <tr key={index}>
-                <td className="border border-gray-300 px-4 py-2">{appointment.patient}</td>
-                <td className="border border-gray-300 px-4 py-2">{formatDate(appointment.date)}</td>
+                <td className="border border-gray-300 px-4 py-2 text-center">{appointment.patient?.first_name} {appointment.patient?.last_name}</td>
+                <td className="border border-gray-300 px-4 py-2 text-center">{formatDate(appointment.date)}</td>
               </tr>
             ))}
           </tbody>

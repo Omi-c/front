@@ -8,7 +8,9 @@ function RegistroPacientes() {
   const [fechaNacimiento, setFechaNacimiento] = useState('');
   const [telefono, setTelefono] = useState('');
   const [cedula, setCedula] = useState('');
+  const [email, setEmail] = useState('');
   const [registroExitoso, setRegistroExitoso] = useState(false); // Estado para controlar la ventana emergente
+  const [error, setError] = useState('');
 
   //Validación de las entradas de los campos
   const handleNombreChange = (e) => {
@@ -39,15 +41,13 @@ function RegistroPacientes() {
     setCedula(input);
   };
 
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    // Verificar si la fecha de nacimiento es mayor que la fecha actual
-    const fechaNacimientoValida = new Date(fechaNacimiento) <= new Date();
-    if (!fechaNacimientoValida) {
-      alert("La fecha de nacimiento no puede ser mayor a la fecha actual");
-      return;
-    }
   
     // Verificar si el número de teléfono cumple con las condiciones requeridas
     const telefonoValido = /^(0412|0414|0416|0424)\d{7}$/g.test(telefono);
@@ -55,17 +55,33 @@ function RegistroPacientes() {
       alert("El número telefónico debe comenzar con 0412, 0414, 0416 o 0424");
       return;
     }
+
+    if (!email.includes('@')) {
+      alert("Ingrese correctamente el correo electrónico.");
+      return;
+    }
+
+    const fechaNacimientoDate = new Date(fechaNacimiento);
+    const fechaActual = new Date();
+    if (fechaNacimientoDate > fechaActual) {
+      alert("La fecha de nacimiento no puede ser en el futuro.");
+      return;
+    }
+
   
     const data = {
       first_name: nombre,
       last_name: apellido,
       ci_number: cedula,
       mobile: telefono,
-      born_date: fechaNacimiento 
+      born_date: fechaNacimiento,
+      email: email, 
     };
     try {
       await axios.post('http://localhost:3001/patients', data);
+      // Mostrar ventana emergente al registrar correctamente
       setRegistroExitoso(true);
+      // Ocultar la ventana emergente después de 3 segundos
       setTimeout(() => {
         setRegistroExitoso(false);
       }, 3000);
@@ -151,12 +167,28 @@ function RegistroPacientes() {
               type="text"
               value={cedula}
               onChange={handleCedulaChange}
-              minLength={7}
-              maxLength={7}
+              minLength={8}
+              maxLength={8}
               placeholder="Cédula de identidad"
               required
             />
           </div>
+
+          <div>
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+                Correo Electrónico
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="email"
+                type="text"
+                value={email}
+                onChange={handleEmailChange}
+                placeholder="Correo electrónico"
+                required
+              />
+            </div>
+
           <div className="flex items-center justify-center">
             <button
               className="bg-teal-600 hover:bg-teal-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
